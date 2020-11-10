@@ -1,0 +1,26 @@
+{
+  "name": "pokemonautochessbot",
+  "version": "1.0.0",
+  "description": "pokemon Auto Chess Discord Bot",
+  "main": "index.js",
+  "scripts": {
+    "start": "node ./index.js",
+    "dev": "nodemon ./index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/arnaudgregoire/pokemonAutoChessBot.git"
+  },
+  "author": "arnaudgregoire",
+  "license": "GPL-3.0-or-later",
+  "bugs": {
+    "url": "https://github.com/arnaudgregoire/pokemonAutoChessBot/issues"
+  },
+  "homepage": "https://github.com/arnaudgregoire/pokemonAutoChessBot#readme",
+  "dependencies": {
+    "discord.js": "^12.4.1",
+    "dotenv": "^8.2.0",
+    "mongoose": "^5.10.13",
+    "nodemon": "^2.0.6"
+  }
+}
