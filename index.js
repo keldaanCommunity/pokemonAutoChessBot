@@ -19,4 +19,8 @@ client.on("message", function(message) {
     const timeTaken = Date.now() - message.createdTimestamp;
     message.reply(`Bzz bzz, this message had a latency of ${timeTaken} ms.`);
   }
+
+  if (command === "help") {
+    message.reply(`Bzz bzz, I am a Pokemon Auto Chess bot. Im currently under development. !help, !ping`);
+  }
 });
