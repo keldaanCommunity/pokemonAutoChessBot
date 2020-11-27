@@ -102,4 +102,43 @@ client.on("message", function(message) {
       });
     });
   }
+  else if(command == "leaderboard"){
+    let email = args[0];
+    Mongoose.connect(process.env.MONGO_URI , (err) => {
+      User.find({'metadata.level': { $gte: 1 }}, (err, users)=> {
+        if(err){
+          message.reply(`Bzz bzz, ERROR connecting to the database, proceed to self destruction.`);
+        }
+        else{
+          if(users.length == 0){
+            message.reply(`Bzz bzz, No users found with email ${email}.`);
+          }
+          users.sort(function(a, b) {
+            return b.metadata.level - a.metadata.level;
+          });
+        }
+
+        let userNames = '';
+        let levels = '';
+        let wins = '';
+        for (let i = 0; i < 10; i++) {
+          const user = users[i];
+
+          userNames += `\`${i + 1}\` ${user.email.split('@')[0]}\n`;
+          levels += `\`${user.metadata.level}\`\n`;
+          wins += `\`${user.metadata.wins}\`\n`;
+        }
+
+        const embed = new Discord.MessageEmbed()
+          .setAuthor('Pokemon Auto Chess Leaderboard', 'https://raw.githubusercontent.com/arnaudgregoire/pokemonAutoChess/master/app/public/dist/assets/ui/logo-pac.png','https://pokemon-auto-chess.herokuapp.com/')
+          .addFields({ name: 'Top 10', value: userNames, inline: true },
+            { name: 'Level', value: levels, inline: true },
+            { name: 'Wins', value: wins, inline: true })
+          .setTimestamp()
+          .setFooter('Pokemon Auto Chess','https://raw.githubusercontent.com/arnaudgregoire/pokemonAutoChess/master/app/public/dist/assets/ui/logo-pac.png');
+    
+        message.channel.send(embed);
+      });
+    });
+  }
 });
