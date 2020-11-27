@@ -22,7 +22,7 @@ client.on("message", function(message) {
   }
 
   else if (command === "help") {
-    message.reply(`Bzz bzz, I am a Pokemon Auto Chess bot. Im currently under development. !help, !ping !stats !whoisthebestdev`);
+    message.reply(`Bzz bzz, I am a Pokemon Auto Chess bot. Im currently under development. !help, !ping !stats !whoisthebestdev !leaderboard`);
   }
 
   else if (command === "whoisthebestdev") {
