@@ -22,7 +22,11 @@ client.on("message", function(message) {
   }
 
   else if (command === "help") {
-    message.reply(`Bzz bzz, I am a Pokemon Auto Chess bot. Im currently under development. !help, !ping !stats`);
+    message.reply(`Bzz bzz, I am a Pokemon Auto Chess bot. Im currently under development. !help, !ping !stats !whoisthebestdev`);
+  }
+
+  else if (command === "whoisthebestdev") {
+    message.reply(`Bzz bzz, According to a collection of sources verified by the independent NGO PokemonAutoChess Institute, the best dev on earth is Keldaan.`);
   }
 
   else if(command == "stats"){
