@@ -1,6 +1,7 @@
 require('dotenv').config();
 const Discord = require("discord.js");
 const Mongoose = require("mongoose");
+//const Cron = require('cron');
 const client = new Discord.Client();
 const User = require('@colyseus/social').User;
 const QuickChart = require('quickchart-js');
@@ -77,6 +78,7 @@ client.on("message", function(message) {
               yAxes: [{
                   ticks: {
                       fontColor: "white",
+                      beginAtZero: true
                   }
               }],
               xAxes: [{
@@ -233,3 +235,13 @@ client.on("message", function(message) {
     });
   }
 });
+
+/*
+let scheduledMessage = new Cron.CronJob('* * * * * *', () => {
+  // This runs every day at 10:30:00, you can do anything you want
+  let channel = client.channels.cache.get('discussion');
+  channel.send('You message');
+});
+
+scheduledMessage.start()
+*/

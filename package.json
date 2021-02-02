@@ -19,10 +19,11 @@
   "homepage": "https://github.com/arnaudgregoire/pokemonAutoChessBot#readme",
   "dependencies": {
     "@colyseus/social": "^0.11.6",
+    "cron": "^1.8.2",
     "discord.js": "^12.4.1",
     "dotenv": "^8.2.0",
     "mongoose": "^5.10.13",
     "nodemon": "^2.0.6",
-    "quickchart-js": "^1.0.5"
+    "quickchart-js": "^1.0.6"
   }
 }
