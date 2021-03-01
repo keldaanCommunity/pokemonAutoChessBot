@@ -41,9 +41,7 @@ client.on("message", function(message) {
             let dateTime = new Date(data.time);
             dateHier = new Date(now - 86400000 * i);
             dateDemain = new Date(now - 86400000 * i + 86400000);
-            //console.log("date  : ",dateTime.toUTCString());
-            //console.log("hier  : ",dateHier.toUTCString());
-            //console.log("demain: ",dateDemain.toUTCString());
+
             if(dateTime > dateHier && dateTime < dateDemain){
               //console.log('true');
               days[10-i] += 1;
@@ -119,81 +117,88 @@ client.on("message", function(message) {
   }
 
   else if(command == "stats"){
+
     let email = args[0];
-    Mongoose.connect(process.env.MONGO_URI , (err) => {
-      User.find({email: email}, (err, users)=> {
-          if(err){
-            message.reply(`Bzz bzz, ERROR connecting to the database, proceed to self destruction.`);
-          }
-          else{
-            if(users.length == 0){
-              message.reply(`Bzz bzz, No users found with email ${email}.`);
+    if(email && email != ""){
+      message.reply(`Bzz bzz, No user found`);
+    }
+    else{
+      Mongoose.connect(process.env.MONGO_URI , (err) => {
+        User.find({email: email}, (err, users)=> {
+            if(err){
+              message.reply(`Bzz bzz, ERROR connecting to the database, proceed to self destruction.`);
             }
             else{
-              users.forEach(usr => {
-                // inside a command, event listener, etc.
-
-                const exampleEmbed = {
-                  color: 0x0099ff,
-                  title: usr.email,
-                  author: {
-                    name: 'Pokemon Auto Chess',
-                    icon_url:  'https://raw.githubusercontent.com/arnaudgregoire/pokemonAutoChess/master/app/public/dist/assets/ui/logo-pac.png',
-                    url: 'https://pokemon-auto-chess.herokuapp.com/',
-                  },
-                  description: `Level ${usr.metadata.level}`,
-                  thumbnail: {
-                    url: `https://raw.githubusercontent.com/arnaudgregoire/pokemonAutoChess/master/app/public/dist/assets/avatar/${usr.metadata.avatar}.png`,
-                  },
-                  fields: [
-                    {
-                      name: 'Total Wins',
-                      value: `${usr.metadata.wins} / 500`,
+              if(users.length == 0){
+                message.reply(`Bzz bzz, No users found with email ${email}.`);
+              }
+              else{
+                users.forEach(usr => {
+                  // inside a command, event listener, etc.
+  
+                  const exampleEmbed = {
+                    color: 0x0099ff,
+                    title: usr.email,
+                    author: {
+                      name: 'Pokemon Auto Chess',
+                      icon_url:  'https://raw.githubusercontent.com/arnaudgregoire/pokemonAutoChess/master/app/public/dist/assets/ui/logo-pac.png',
+                      url: 'https://pokemon-auto-chess.herokuapp.com/',
                     },
-                    {
-                      name: 'Magma Cavern',
-                      value: `${usr.metadata.mapWin.FIRE} / 100`,
-                      inline: true,
+                    description: `Level ${usr.metadata.level}`,
+                    thumbnail: {
+                      url: `https://raw.githubusercontent.com/arnaudgregoire/pokemonAutoChess/master/app/public/dist/assets/avatar/${usr.metadata.avatar}.png`,
                     },
-                    {
-                      name: 'Frosty Forest',
-                      value: `${usr.metadata.mapWin.ICE} / 100`,
-                      inline: true,
+                    fields: [
+                      {
+                        name: 'Total Wins',
+                        value: `${usr.metadata.wins} / 500`,
+                      },
+                      {
+                        name: 'Magma Cavern',
+                        value: `${usr.metadata.mapWin.FIRE} / 100`,
+                        inline: true,
+                      },
+                      {
+                        name: 'Frosty Forest',
+                        value: `${usr.metadata.mapWin.ICE} / 100`,
+                        inline: true,
+                      },
+                      {
+                        name: 'Stormy Sea',
+                        value: `${usr.metadata.mapWin.WATER} / 100`,
+                        inline: true,
+                      },
+                      {
+                        name: 'Tiny Woods',
+                        value: `${usr.metadata.mapWin.NORMAL} / 100`,
+                        inline: true,
+                      },
+                      {
+                        name: 'Hidden Highlands',
+                        value: `${usr.metadata.mapWin.GRASS} / 100`,
+                        inline: true,
+                      },
+                      {
+                        name: 'Glimmer Desert',
+                        value: `${usr.metadata.mapWin.GROUND} / 100`,
+                        inline: true,
+                      },
+                    ],
+                    timestamp: new Date(),
+                    footer: {
+                      text: 'Pokemon Auto Chess',
+                      icon_url: 'https://raw.githubusercontent.com/arnaudgregoire/pokemonAutoChess/master/app/public/dist/assets/ui/logo-pac.png',
                     },
-                    {
-                      name: 'Stormy Sea',
-                      value: `${usr.metadata.mapWin.WATER} / 100`,
-                      inline: true,
-                    },
-                    {
-                      name: 'Tiny Woods',
-                      value: `${usr.metadata.mapWin.NORMAL} / 100`,
-                      inline: true,
-                    },
-                    {
-                      name: 'Hidden Highlands',
-                      value: `${usr.metadata.mapWin.GRASS} / 100`,
-                      inline: true,
-                    },
-                    {
-                      name: 'Glimmer Desert',
-                      value: `${usr.metadata.mapWin.GROUND} / 100`,
-                      inline: true,
-                    },
-                  ],
-                  timestamp: new Date(),
-                  footer: {
-                    text: 'Pokemon Auto Chess',
-                    icon_url: 'https://raw.githubusercontent.com/arnaudgregoire/pokemonAutoChess/master/app/public/dist/assets/ui/logo-pac.png',
-                  },
-                };
-                
-                message.reply({ embed: exampleEmbed });
-            });
+                  };
+                  
+                  message.reply({ embed: exampleEmbed });
+              });
+              }
             }
-          }
+        });
       });
-    });
+    }
+
   }
   else if(command == "leaderboard"){
     let email = args[0];
