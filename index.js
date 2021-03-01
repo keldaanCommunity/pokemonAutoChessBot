@@ -119,7 +119,7 @@ client.on("message", function(message) {
   else if(command == "stats"){
 
     let email = args[0];
-    if(email && email != ""){
+    if(!email && email != ""){
       message.reply(`Bzz bzz, No user found`);
     }
     else{
