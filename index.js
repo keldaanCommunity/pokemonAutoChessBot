@@ -5,7 +5,7 @@ const Mongoose = require("mongoose");
 const client = new Discord.Client();
 const User = require('@colyseus/social').User;
 const QuickChart = require('quickchart-js');
-const GameStats = require('./game-stats');
+const Statistic = require('./statistic');
 
 client.login(process.env.BOT_TOKEN);
 
@@ -33,7 +33,7 @@ client.on("message", function(message) {
     let daysString = ['','','','','','','','','','']; 
     Mongoose.connect(process.env.MONGO_URI , (err) => {
       let now = Date.now();
-      GameStats.find({'time': { $gt: now - 86400000 * 10 }}, async (err, datas)=> {
+      Statistic.find({'time': { $gt: now - 86400000 * 10 }},['time'],{}, async (err, datas)=> {
         for (let i = 10; i > 0; i--) {
           let dateHier;
           let dateDemain;
