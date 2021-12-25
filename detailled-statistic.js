@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
-const {ITEMS, PKM} = require('./../enum');
+const {ITEMS, PKM} = require('./enum');
 
 const pokemon = new Schema({
   name: {
