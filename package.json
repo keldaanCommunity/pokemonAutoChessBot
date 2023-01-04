@@ -18,10 +18,10 @@
   },
   "homepage": "https://github.com/arnaudgregoire/pokemonAutoChessBot#readme",
   "dependencies": {
-    "discord.js": "^12.4.1",
-    "dotenv": "^8.2.0",
-    "mongoose": "^5.10.13",
-    "nodemon": "^2.0.6",
-    "quickchart-js": "^1.0.6"
+    "discord.js": "^14.7.1",
+    "dotenv": "^16.0.3",
+    "mongoose": "^6.8.2",
+    "nodemon": "^2.0.20",
+    "quickchart-js": "^3.1.1"
   }
 }
