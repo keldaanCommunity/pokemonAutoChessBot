@@ -7,14 +7,29 @@ const { SlashCommandBuilder } = require('discord.js');
 module.exports = {
 	data: new SlashCommandBuilder()
 		.setName('activity')
-		.setDescription('Get latest data about pokemon auto chess activity'),
+		.setDescription('Get latest data about pokemon auto chess activity')
+		.addStringOption(option =>
+			option
+				.setName('days')
+				.setDescription('The data range in days [0-60]')
+				.setRequired(true)),
 	async execute(interaction) {
-		let days = [0,0,0,0,0,0,0,0,0,0];
-        let daysString = ['','','','','','','','','',''];
+        const input = parseInt(interaction.options.getString('days'))
+        let numberOfDays = input ? input : 10
+        numberOfDays = Math.max(0, input)
+        numberOfDays = Math.min(60, input)
+
+        let days = []
+        let daysString = []
+        for(let i=0; i<numberOfDays; i++){
+            days.push(0)
+            daysString.push('')
+        }
+
         Mongoose.connect(process.env.MONGO_URI , (err) => {
             let now = Date.now();
-            DetailledStatistic.find({'time': { $gt: now - 86400000 * 10 }},['time'],{}, async (err, datas)=> {
-            for (let i = 10; i > 0; i--) {
+            DetailledStatistic.find({'time': { $gt: now - 86400000 * numberOfDays }},['time'],{}, async (err, datas)=> {
+            for (let i = numberOfDays; i > 0; i--) {
                 let dateHier;
                 let dateDemain;
                 datas.forEach(data=>{
@@ -24,10 +39,10 @@ module.exports = {
 
                 if(dateTime > dateHier && dateTime < dateDemain){
                     //console.log('true');
-                    days[10-i] += 1;
+                    days[numberOfDays-i] += 1;
                 }
                 });
-                daysString[10-i] = dateDemain.toUTCString().slice(0,9);
+                daysString[numberOfDays-i] = dateDemain.toUTCString().slice(0,9);
             }
             //console.log(days);
             const chart = new QuickChart();
@@ -42,7 +57,7 @@ module.exports = {
                         label: 'Games played',
                         data: days,
                         backgroundColor:'rgba(104, 130, 158, 0.5)',
-                        borderColor:'rgba(89,130,52,1)',
+                        borderColor:'#f5891c',
                         pointBackgroundColor:'rgba(174,189,56,1)'
                     }]
                 },
@@ -71,7 +86,7 @@ module.exports = {
             const url = await chart.getShortUrl();
             const exampleEmbed = {
                 color: 0x0099ff,
-                title: 'Game Activity',
+                title: `Game Activity (Last ${numberOfDays} days)`,
                 author: {
                 name: 'Pokemon Auto Chess',
                 icon_url:  'https://raw.githubusercontent.com/keldaanInteractive/pokemonAutoChess/master/app/public/dist/client/assets/ui/pokemon_autochess_final.png',
