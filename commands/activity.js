@@ -46,7 +46,7 @@ module.exports = {
             }
             //console.log(days);
             const chart = new QuickChart();
-            chart.setBackgroundColor('rgba(54, 57, 63, 1)');
+            chart.setBackgroundColor('#272727');
             chart
                 .setConfig({
                 type: 'line',
@@ -56,7 +56,7 @@ module.exports = {
                     datasets: [{
                         label: 'Games played',
                         data: days,
-                        backgroundColor:'#272727',
+                        backgroundColor:'#505160',
                         borderColor:'#f5891c',
                         pointBackgroundColor:'#f5ba1c'
                     }]
