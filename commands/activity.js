@@ -56,9 +56,9 @@ module.exports = {
                     datasets: [{
                         label: 'Games played',
                         data: days,
-                        backgroundColor:'rgba(104, 130, 158, 0.5)',
+                        backgroundColor:'#272727',
                         borderColor:'#f5891c',
-                        pointBackgroundColor:'rgba(174,189,56,1)'
+                        pointBackgroundColor:'#f5ba1c'
                     }]
                 },
                 options:{
