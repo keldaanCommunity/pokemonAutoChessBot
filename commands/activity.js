@@ -11,13 +11,13 @@ module.exports = {
 		.addStringOption(option =>
 			option
 				.setName('days')
-				.setDescription('The data range in days [0-60]')
+				.setDescription('The data range in days [0-30]')
 				.setRequired(true)),
 	async execute(interaction) {
         const input = parseInt(interaction.options.getString('days'))
         let numberOfDays = input ? input : 10
         numberOfDays = Math.max(0, input)
-        numberOfDays = Math.min(60, input)
+        numberOfDays = Math.min(30, input)
 
         let days = []
         let daysString = []
