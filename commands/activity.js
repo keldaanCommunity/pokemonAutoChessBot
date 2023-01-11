@@ -14,7 +14,7 @@ module.exports = {
 				.setDescription('The data range in days [0-365]')
 				.setRequired(true)),
 	async execute(interaction) {
-        
+        await interaction.deferReply();
         const input = parseInt(interaction.options.getString('days'))
         let numberOfDays = input ? input : 10
         numberOfDays = Math.max(0, input)
@@ -102,7 +102,7 @@ module.exports = {
                 icon_url: 'https://raw.githubusercontent.com/keldaanInteractive/pokemonAutoChess/master/app/public/dist/client/assets/ui/pokemon_autochess_final.png',
                 },
             };
-            await interaction.deferReply({ ephemeral: true, embeds: [exampleEmbed]  });
+            await interaction.editReply({ embeds: [exampleEmbed] });
             });
         });
 	},
