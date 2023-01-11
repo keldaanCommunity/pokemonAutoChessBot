@@ -11,14 +11,14 @@ module.exports = {
 		.addStringOption(option =>
 			option
 				.setName('days')
-				.setDescription('The data range in days [0-365]')
+				.setDescription('The data range in days [0-180]')
 				.setRequired(true)),
 	async execute(interaction) {
         await interaction.deferReply();
         const input = parseInt(interaction.options.getString('days'))
         let numberOfDays = input ? input : 10
         numberOfDays = Math.max(0, input)
-        numberOfDays = Math.min(365, input)
+        numberOfDays = Math.min(180, input)
 
         let days = []
         let daysString = []
