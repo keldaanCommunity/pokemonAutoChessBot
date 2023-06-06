@@ -1,9 +1,12 @@
 require('dotenv').config();
 const fs = require('node:fs');
 const path = require('node:path');
+const Mongoose = require("mongoose");
 const { Client, Collection, Events, GatewayIntentBits } = require('discord.js');
 
 const client = new Client({ intents: [GatewayIntentBits.Guilds] });
+
+Mongoose.connect(process.env.MONGO_URI)
 
 client.commands = new Collection();
 const commandsPath = path.join(__dirname, 'commands');

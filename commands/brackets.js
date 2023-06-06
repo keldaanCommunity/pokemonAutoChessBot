@@ -13,7 +13,6 @@ module.exports = {
       await interaction.deferReply()
       const events = await interaction.guild.scheduledEvents.fetch()
       const subscribers = await Array.from(events)[0][1].fetchSubscribers({withMember: true})
-      await Mongoose.connect(process.env.MONGO_URI)
 
       const users = []
 
@@ -22,11 +21,12 @@ module.exports = {
         const user = usersArray[i][1]
         
         const nameToSearch = user.member?.nickname ? user.member.nickname : user.user.username
-        const us = await UserMetadata.findOne({
+        const players = await UserMetadata.find({
           displayName: nameToSearch 
-        })
-        if (us) {
-          users.push({ u: nameToSearch, e: us.elo })
+        }, "elo", {limit: 1, sort: {elo: -1}})
+        if (players && players.length  && players.length > 0) {
+          const player = players[0]
+          users.push({ u: nameToSearch, e: player.elo })
         } else {
           users.push({ u:nameToSearch, e: 0 })
         }
