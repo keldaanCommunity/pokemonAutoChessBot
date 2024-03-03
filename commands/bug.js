@@ -1,10 +1,12 @@
-const { SlashCommandBuilder } = require("discord.js")
+const { SlashCommandBuilder } = require("discord.js");
 
 module.exports = {
-  data: new SlashCommandBuilder()
-    .setName("bug")
-    .setDescription("Report a bug"),
+  data: new SlashCommandBuilder().setName("bug").setDescription("Report a bug"),
   async execute(interaction) {
-    await interaction.reply({files: ["https://cdn.discordapp.com/attachments/737244224688226346/1151470210084257853/bug-report-guide.png?ex=6538f333&is=65267e33&hm=8d14208b78731a60d07688b6dbcb27159a18b60def0ddc7f76949c494f47a06a&"]})
+    await interaction.reply({
+      files: [
+        "https://cdn.discordapp.com/attachments/1063164968721190974/1213895276784259092/bug-report-guide.png?ex=65f72313&is=65e4ae13&hm=c212dfa293cd5d5ef9c891649f7fbd3c1a20dab2b70eab443abf6d54828edc94&",
+      ],
+    });
   },
-}
+};
