@@ -1,7 +1,5 @@
-const { codeBlock, PermissionFlagsBits } = require("discord.js")
-const UserMetadata  = require("../user-metadata")
-const Mongoose = require("mongoose")
-const { SlashCommandBuilder, Routes } = require("discord.js")
+import { codeBlock, PermissionFlagsBits, SlashCommandBuilder, } from "discord.js"
+import { UserMetadata } from "../user-metadata"
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -12,11 +10,11 @@ module.exports = {
     try {
       await interaction.deferReply()
       const events = await interaction.guild.scheduledEvents.fetch()
-      const subscribers = await Array.from(events)[0][1].fetchSubscribers({withMember: true})
+      const subscribers = await (Array.from(events) as any)[0][1].fetchSubscribers({withMember: true})
 
-      const users = []
+      const users = new Array<{u: string, e: number}>()
 
-      const usersArray = Array.from(subscribers)
+      const usersArray = Array.from(subscribers) as any[]
       for (let i = 0; i < usersArray.length; i++) {
         const user = usersArray[i][1]
         
@@ -39,7 +37,7 @@ module.exports = {
 
       const numberOfPoolsToGenerate = Math.pow(2,i)
 
-      const pools = []
+      const pools = new Array<Array<{u: string, e: number}>>()
       for (let j = 0; j < numberOfPoolsToGenerate; j++) {
         pools.push([])
       }

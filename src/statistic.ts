@@ -1,5 +1,5 @@
-const mongoose = require('mongoose');
-const Schema = mongoose.Schema;
+import { Schema, model } from 'mongoose';
+
 const statisticSchema = new Schema(
     {
       time:{
@@ -22,5 +22,5 @@ const statisticSchema = new Schema(
     }
 );
 
-const Statistic = mongoose.model('Statistic', statisticSchema);
-module.exports = Statistic;
+const Statistic = model('Statistic', statisticSchema);
+export default Statistic;
