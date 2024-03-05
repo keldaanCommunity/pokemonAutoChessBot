@@ -1,50 +1,34 @@
 
-const Mongoose = require("mongoose");
-const QuickChart = require('quickchart-js');
-const DetailledStatistic = require('../detailled-statistic');
-const { SlashCommandBuilder } = require('discord.js');
+import { SlashCommandBuilder } from 'discord.js';
+import QuickChart from 'quickchart-js';
+import { UserMetadata } from '../user-metadata';
 
 module.exports = {
 	data: new SlashCommandBuilder()
-		.setName('activity')
-		.setDescription('Get latest data about pokemon auto chess activity')
-		.addStringOption(option =>
-			option
-				.setName('days')
-				.setDescription('The data range in days [0-180]')
-				.setRequired(true)),
+		.setName('distribution')
+		.setDescription('Get the current elo distribution graph'),
+
 	async execute(interaction) {
-        await interaction.deferReply();
-        const input = parseInt(interaction.options.getString('days'))
-        let numberOfDays = input ? input : 10
-        numberOfDays = Math.max(0, input)
-        numberOfDays = Math.min(180, input)
+        try {
+                    //console.log(days);
+        await interaction.deferReply()
+        const minUser = await UserMetadata.findOne({}, "elo", {limit: 1, sort: {elo: 1}})
+        const maxUser = await UserMetadata.findOne({}, "elo", {limit: 1, sort: {elo: -1}})
+        const minElo = minUser ? minUser.elo : 0
+        const maxElo = maxUser ? maxUser.elo : 3000
 
-        let days = []
-        let daysString = []
-        for(let i=0; i<numberOfDays; i++){
-            days.push(0)
-            daysString.push('')
+        const minEloBound = Math.max(0, Math.floor(minElo / 10) * 10)
+        const maxEloBound = Math.ceil(maxElo / 10) * 10
+
+        const step = 25
+        const labels = new Array<number>()
+        const data = new Array<number>()
+
+        for (let e = minEloBound; e < maxEloBound; e+=step) {
+            labels.push(e)
+            const numbersOfPlayers = await UserMetadata.countDocuments({elo: {$gt: e, $lt: e + step}})
+            data.push(numbersOfPlayers)
         }
-
-        let now = Date.now();
-        DetailledStatistic.find({'time': { $gt: now - 86400000 * numberOfDays }},['time'],{}, async (err, datas)=> {
-        for (let i = numberOfDays; i > 0; i--) {
-            let dateHier;
-            let dateDemain;
-            datas.forEach(data=>{
-            let dateTime = new Date(data.time);
-            dateHier = new Date(now - 86400000 * i);
-            dateDemain = new Date(now - 86400000 * i + 86400000);
-
-            if(dateTime > dateHier && dateTime < dateDemain){
-                //console.log('true');
-                days[numberOfDays-i] += 1;
-            }
-            });
-            daysString[numberOfDays-i] = dateDemain.toUTCString().slice(0,9);
-        }
-        //console.log(days);
         const chart = new QuickChart();
         chart.setBackgroundColor('#272727');
         chart
@@ -52,10 +36,10 @@ module.exports = {
             type: 'line',
             data:
             {
-                labels: daysString,
+                labels: labels,
                 datasets: [{
-                    label: 'Games played',
-                    data: days,
+                    label: 'Numbers of players',
+                    data: data,
                     backgroundColor:'#505160',
                     borderColor:'#f5891c',
                     pointBackgroundColor:'#f5ba1c'
@@ -69,6 +53,8 @@ module.exports = {
                 },
             scales: {
                 yAxes: [{
+                    type: "logarithmic",
+                    display: true,
                     ticks: {
                         fontColor: "white",
                         beginAtZero: true
@@ -86,7 +72,7 @@ module.exports = {
         const url = await chart.getShortUrl();
         const exampleEmbed = {
             color: 0x0099ff,
-            title: `Game Activity (Last ${numberOfDays} days)`,
+            title: `Elo Distribution Graph`,
             author: {
             name: 'Pokemon Auto Chess',
             icon_url:  'https://raw.githubusercontent.com/keldaanInteractive/pokemonAutoChess/master/app/public/dist/client/assets/ui/pokemon_autochess_final.png',
@@ -102,7 +88,10 @@ module.exports = {
             },
         };
         await interaction.editReply({ embeds: [exampleEmbed] });
-        });
+        } catch (error) {
+            console.log(error)
+            await interaction.editReply('Server error')
+        }
 	},
 };
 

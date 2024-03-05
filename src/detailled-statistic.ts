@@ -1,4 +1,4 @@
-const { Schema, model } = require("mongoose")
+import { Schema, model } from "mongoose";
 
 
 const pokemon = new Schema({
@@ -41,4 +41,4 @@ const DetailledStatistic = model(
   "DetailledStatisticV2",
   statisticSchema
 )
-module.exports = DetailledStatistic;
+export default DetailledStatistic;
