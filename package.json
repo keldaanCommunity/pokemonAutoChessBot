@@ -8,7 +8,7 @@
     "dev": "ts-node-dev --watch \"src/**/*\" --respawn --transpile-only ./src/index.ts",
     "build": "npm run clean && npm run ts-build && npm run deploy-commands",
     "clean": "rimraf ./build",
-    "ts-build":"tsc",
+    "ts-build": "tsc",
     "deploy-commands": "node ./build/deploy-commands.js"
   },
   "repository": {
@@ -24,6 +24,8 @@
   "dependencies": {
     "discord.js": "^14.14.1",
     "dotenv": "^16.4.5",
+    "graphql": "^16.8.1",
+    "graphql-request": "^6.1.0",
     "mongoose": "^8.2.0",
     "node-fetch": "^3.3.2",
     "quickchart-js": "^3.1.3",
